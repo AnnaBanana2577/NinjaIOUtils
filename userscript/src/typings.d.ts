@@ -370,6 +370,7 @@ declare var app: {
       soundTab: Container & {
         volumeSlider: Slider;
         typewriter: Checkbox;
+        musicPlayer: Checkbox;
       };
       graphicsTab: Container & {
         enableAA: Container;
