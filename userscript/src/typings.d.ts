@@ -485,3 +485,32 @@ declare var Game: {
 };
 declare var AudioEffects: any;
 declare var Howler: any;
+
+type MusicExtension =
+  | "mp3"
+  | "MPEG"
+  | "OPUS"
+  | "OGG"
+  | "OGA"
+  | "WAV"
+  | "AAC"
+  | "CAF"
+  | "M4A"
+  | "MP4"
+  | "WEBA"
+  | "WEBM"
+  | "DOLBY"
+  | "FLAC";
+
+interface HowlOptions {
+  src: Array<string>;
+  autoplay?: boolean;
+  loop?: boolean;
+  volume?: number;
+  format: Array<MusicExtension>;
+}
+declare class Howl extends EventDispatcher {
+  constructor(options: HowlOptions);
+  play();
+  stop();
+}
