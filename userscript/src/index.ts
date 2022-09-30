@@ -28,7 +28,7 @@ hookTextureLoader();
 /* Fixes pasting in firefox. */
 if (!navigator.clipboard.readText) {
   navigator.clipboard.readText = function () {
-    return new Promise(res => res(prompt("Paste text now.") || ""));
+    return new Promise((res) => res(prompt("Paste text now.") || ""));
   };
 }
 hookPreloader();
@@ -76,7 +76,7 @@ No support will be provided to logged out users experiencing issues, sorry.`
   };
   app.showMenu = function () {
     app._showMenu();
-    menuListeners.forEach(l => l());
+    menuListeners.forEach((l) => l());
     reposItems();
   };
 
@@ -113,8 +113,8 @@ No support will be provided to logged out users experiencing issues, sorry.`
   document.addEventListener("keydown", handleKeyDown);
 
   //Handler for Music Player
-  document.addEventListener("keydown", handleKeyDownMusicPlayer),
-    updateFriendList();
+  document.addEventListener("keydown", handleKeyDownMusicPlayer);
+  updateFriendList();
 
   hookJoinGameButton();
   setTimeout(() => updateFriendList(), 2000);
