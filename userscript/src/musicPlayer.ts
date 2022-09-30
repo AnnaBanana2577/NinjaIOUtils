@@ -1,11 +1,13 @@
 //TODO - Different way of checking if Howler.js is initialized;  Add new songs; Add setings inputs;
+import { SETTINGS } from "./settings/settings";
 
 interface Song {
   name: string;
   url: string;
 }
 
-const baseUrl = "";
+const baseUrl =
+  "https://github.com/AnnaBanana2577/NinjaIOUtils/raw/musicplayer/songs/";
 
 const songs: Array<Song> = [
   {
@@ -49,6 +51,7 @@ class MusicPlayer {
   }
 
   public start() {
+    if (!SETTINGS.enableMusicPlayer) return;
     if (!this.isLoaded || this.isPlaying) return;
 
     this.tracks[this.currentTrackIndex].play();
@@ -109,4 +112,4 @@ class MusicPlayer {
   }
 }
 
-const musicPlayer = new MusicPlayer(songs);
+export const musicPlayer = new MusicPlayer(songs);
