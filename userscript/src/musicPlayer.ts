@@ -1,69 +1,96 @@
-const songs = [
-  "https://www.dropbox.com/s/i7jc9ojpnsyii2l/Urban%20Sunrise%20.mp3?dl=1",
-  "https://www.dropbox.com/s/c26fdsksh9q0nzg/Images%20-%20Lost%20European.wav?dl=1",
-  "https://www.dropbox.com/s/36gyipvdty81o51/What%20a%20beautiful%20Sunset%21%20%28radio%20mix%29%20-%20Angelwing.wav?dl=1",
+//TODO - Different way of checking if Howler.js is initialized;  Add new songs; Add setings inputs;
+
+interface Song {
+  name: string;
+  url: string;
+}
+
+const baseUrl = "";
+
+const songs: Array<Song> = [
+  {
+    name: "Starry nights",
+    url: "https://www.dropbox.com/s/i7jc9ojpnsyii2l/Urban%20Sunrise%20.mp3?dl=1",
+  },
+  {
+    name: "Cornpopping Carnival",
+    url: "https://www.dropbox.com/s/620qqip91g6td9t/Double%20Violin%20Concerto%201st%20Movement%20-%20J.S.%20Bach.mp3?dl=1",
+  },
+  {
+    name: "Devils Advocate",
+    url: "https://www.dropbox.com/s/ayf4cwdytqafs70/The%20Calling%20%20-%20Angelwing.mp3?dl=1",
+  },
 ];
 
 export async function handleKeyDownMusicPlayer(e: KeyboardEvent) {
-  if (e.repeat) return;
+  const isAltPressed = UserInput.pressed[18];
+  if (e.repeat || !isAltPressed) return;
 
   switch (e.key) {
-    case "F6":
+    case "z":
       musicPlayer.back();
       break;
-    case "F8":
+    case "c":
       musicPlayer.next();
       break;
-    case "F7":
-      musicPlayer.isPlaying ? musicPlayer.stop() : musicPlayer.start();
+    case "x":
+      musicPlayer.isPlaying ? musicPlayer.stop(true) : musicPlayer.start();
   }
 }
 
 class MusicPlayer {
+  private isLoaded = false;
   public isPlaying = false;
-  private currentSongIndex = 0;
-  private songs: Array<Howl> = [];
+  private currentTrackIndex = 0;
+  private tracks: Array<Howl> = [];
 
-  constructor(private songUrls: Array<string>) {
+  constructor(private songs: Array<Song>) {
     this.loadSongs();
   }
 
   public start() {
-    if (this.isPlaying) return;
-    this.songs[this.currentSongIndex].play();
+    if (!this.isLoaded || this.isPlaying) return;
+
+    this.tracks[this.currentTrackIndex].play();
     this.isPlaying = true;
+    App.Console.log(`Playing ${this.currentTrackName}`);
   }
 
-  public stop() {
-    if (!this.isPlaying) return;
-    this.songs[this.currentSongIndex].stop();
+  public stop(shouldLog: boolean) {
+    if (!this.isLoaded || !this.isPlaying) return;
+    this.tracks[this.currentTrackIndex].stop();
     this.isPlaying = false;
+    if (shouldLog) App.Console.log(`Stopped ${this.currentTrackName}`);
   }
 
   public next() {
-    this.stop();
+    if (!this.isLoaded) return;
 
-    if (this.currentSongIndex++ > this.songs.length - 1)
-      this.currentSongIndex = this.songs.length - 1;
+    if (this.isPlaying) this.stop(false);
+    this.currentTrackIndex++;
+    if (this.currentTrackIndex >= this.songs.length) this.currentTrackIndex = 0;
 
     this.start();
   }
 
   public back() {
-    this.stop();
+    if (!this.isLoaded) return;
 
-    if (this.currentSongIndex-- < 0) this.currentSongIndex = 0;
+    if (this.isPlaying) this.stop(false);
+    this.currentTrackIndex--;
+    if (this.currentTrackIndex < 0)
+      this.currentTrackIndex = this.tracks.length - 1;
 
     this.start();
   }
 
   private async loadSongs() {
     setTimeout(() => {
-      //Wait 7 seconds before initalizing, to ensure Howler.js is loaded first
-      this.songUrls.forEach((song) =>
-        this.songs.push(
+      //Wait 7 seconds before initalizing, to ensure Howler.js is loaded first | TODO: Different way to check Howler.js Initialization state
+      this.songs.forEach((song) =>
+        this.tracks.push(
           new Howl({
-            src: [song],
+            src: [song.url],
             html5: true,
             format: ["mp3"],
             autoplay: false,
@@ -72,7 +99,13 @@ class MusicPlayer {
           })
         )
       );
+      this.isLoaded = true;
+      App.Console.log("Music player initialized");
     }, 1000 * 7);
+  }
+
+  private get currentTrackName(): string {
+    return this.songs[this.currentTrackIndex].name;
   }
 }
 
