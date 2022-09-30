@@ -507,6 +507,7 @@ interface HowlOptions {
   autoplay?: boolean;
   loop?: boolean;
   volume?: number;
+  html5: boolean;
   format: Array<MusicExtension>;
 }
 declare class Howl extends EventDispatcher {
