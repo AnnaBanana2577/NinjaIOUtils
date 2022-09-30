@@ -115,6 +115,7 @@ No support will be provided to logged out users experiencing issues, sorry.`
   //Handler for Music Player
   document.addEventListener("keydown", handleKeyDownMusicPlayer),
     updateFriendList();
+
   hookJoinGameButton();
   setTimeout(() => updateFriendList(), 2000);
   setInterval(() => updateFriendList(), 60000);
