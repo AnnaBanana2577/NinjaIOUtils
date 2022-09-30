@@ -1,13 +1,5 @@
 const songs = [
-  new Howl({
-    src: [
-      "https://www.dropbox.com/s/i7jc9ojpnsyii2l/Urban%20Sunrise%20.mp3?dl=1",
-    ],
-    format: ["mp3"],
-    autoplay: false,
-    loop: true,
-    volume: 0.7,
-  }),
+  "https://www.dropbox.com/s/i7jc9ojpnsyii2l/Urban%20Sunrise%20.mp3?dl=1",
 ];
 
 export async function handleKeyDownMusicPlayer(e: KeyboardEvent) {
@@ -22,7 +14,7 @@ class MusicPlayer {
 
   constructor(private songUrls: Array<string>) {
     setTimeout(() => {
-      songUrls.forEach(song =>
+      songUrls.forEach((song) =>
         this.songs.push(
           new Howl({
             src: [song],
