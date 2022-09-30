@@ -20,6 +20,7 @@ import hookJoinGameButton from "./joinGameHook";
 import initHashManager from "./hashManager";
 import hookSocialMenu from "./socialMenuHook";
 import { handleKeyDown } from "./hotkeyMessages";
+import { handleKeyDownMusicPlayer } from "./musicPlayer";
 
 config; // ensures config is at the top of the compiled file
 
@@ -111,7 +112,9 @@ No support will be provided to logged out users experiencing issues, sorry.`
   //Handler for HotkeyMessages
   document.addEventListener("keydown", handleKeyDown);
 
-  updateFriendList();
+  //Handler for Music Player
+  document.addEventListener("keydown", handleKeyDownMusicPlayer),
+    updateFriendList();
   hookJoinGameButton();
   setTimeout(() => updateFriendList(), 2000);
   setInterval(() => updateFriendList(), 60000);
